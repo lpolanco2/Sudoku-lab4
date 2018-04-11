@@ -52,7 +52,7 @@ public class Board {
 	 */
 	public void insert(int x, int y, int v){
 		if(x>size || y > size || v > size || x < 0 || y < 0 ) {
-			//JLabel msgBar = new JLabel("Invalid Input." +  x + y + v);
+			//DELETE wont do anythingJLabel msgBar = new JLabel("Invalid Input." +  x + y + v);
 			return;
 		}
 		if(v==0 || sudokuLaw(x,y,v))
@@ -76,7 +76,7 @@ public class Board {
 
 		for (int jj = 0; jj < size; jj++) {
 			if (table[x][jj] == v) {
-				JLabel msgBar = new JLabel("invalid row input "+ v);
+				//JLabel msgBar = new JLabel("invalid row input "+ v);
 				return false;
 			}
 		}
@@ -84,7 +84,7 @@ public class Board {
 
 		for (int ii = 0; ii < size; ii++) {
 			if (table[ii][y] == v) {
-				JLabel msgBar = new JLabel("invalid column input "+ v);
+				//JLabel msgBar = new JLabel("invalid column input "+ v);
 				return false;
 			}
 		}
@@ -96,7 +96,7 @@ public class Board {
 		for (int ii = 0; ii < (int)Math.sqrt(size); ii++) {
 			for (int jj = 0; jj < (int)Math.sqrt(size); jj++) {
 				if (table[boxRow + ii][boxColumn + jj] == v) {
-					JLabel msgBar = new JLabel("invalid input "+ v);
+					//JLabel msgBar = new JLabel("invalid input "+ v);
 					return false;
 				}
 			}
