@@ -3,72 +3,67 @@ package sudoku.model;
 import java.io.PrintStream;
 import java.util.Random;
 
+import javax.swing.JLabel;
+
 /** An abstraction of Sudoku puzzle. */
-	public class Board {
-/**
- * 
- */
+public class Board {
+	/**
+	 * 
+	 */
 	private PrintStream out = System.out;
 	public int[][] table;
 	private boolean [][] truthTable;
-	
-	
-    /** Size of this board (number of columns/rows). */
-    public int size;
+	/** Size of this board (number of columns/rows). */
+	public int size;
 
-    /** Create a new board of the given size. */
-    public Board(int size) {
-        this.size = size;
-    		this.table = new int [size][size];
+	/** Create a new board of the given size. */
+	public Board(int size) {
+		this.size = size;
+		this.table = new int [size][size];
 		this.truthTable = new boolean[size][size];
-    
-    }
 
-    
-    /** Return the size of this board. */
-    
-    public int size() {
-    	return size;
-    }
-    
+	}
+
+
+	/** Return the size of this board. */
+
+	public int size() {
+		return size;
+	}
+
 
 
 	public void updateBoard(int x, int y, String inputval) {
 		// TODO Auto-generated method stub
-		
 	}
 
-/**
- * 
- * @return
- */
+	/**
+	 * 
+	 * @return
+	 */
 	public int [][] getTable(){
-		return table;	
-		}
-		/**
-		 * 
-		 * @param x
-		 * @param y
-		 * @param v
-		 */
+		return table; 
+	}
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param v
+	 */
 	public void insert(int x, int y, int v){
 		if(x>size || y > size || v > size || x < 0 || y < 0 ) {
-			out.println("Invalid Input." +  x + y + v);
+			//JLabel msgBar = new JLabel("Invalid Input." +  x + y + v);
 			return;
 		}
-	if(v==0 || sudokuLaw(x,y,v))
-	
-		 this.table[x][y] = v;
-		 this.truthTable[x][y] = true;
+		if(v==0 || sudokuLaw(x,y,v))
+			this.table[x][y] = v;
+		this.truthTable[x][y] = true;
 	}
-	
 	/**
 	 * 
 	 */
-	
 
 	private static Random rand = new Random();
-	
 	/**
 	 * 
 	 * @param x
@@ -76,38 +71,40 @@ import java.util.Random;
 	 * @param v
 	 * @return
 	 */
-	
 	public boolean sudokuLaw(int x, int y, int v){
 
 
-        for (int jj = 0; jj < size; jj++) {
-            if (table[x][jj] == v) {
-                return false;
-            }
-        }
+		for (int jj = 0; jj < size; jj++) {
+			if (table[x][jj] == v) {
+				JLabel msgBar = new JLabel("invalid row input "+ v);
+				return false;
+			}
+		}
 
 
-        for (int ii = 0; ii < size; ii++) {
-            if (table[ii][y] == v) {
-                return false;
-            }
-        }
+		for (int ii = 0; ii < size; ii++) {
+			if (table[ii][y] == v) {
+				JLabel msgBar = new JLabel("invalid column input "+ v);
+				return false;
+			}
+		}
 
-     
-        int boxRow = x - x % (int)Math.sqrt(size);
-        int boxColumn = y - y % (int)Math.sqrt(size);
 
-        for (int ii = 0; ii < (int)Math.sqrt(size); ii++) {
-            for (int jj = 0; jj < (int)Math.sqrt(size); jj++) {
-                if (table[boxRow + ii][boxColumn + jj] == v) {
-                    return false;
-                }
-            }
-        }
+		int boxRow = x - x % (int)Math.sqrt(size);
+		int boxColumn = y - y % (int)Math.sqrt(size);
 
-      
-        return true;
-    }
+		for (int ii = 0; ii < (int)Math.sqrt(size); ii++) {
+			for (int jj = 0; jj < (int)Math.sqrt(size); jj++) {
+				if (table[boxRow + ii][boxColumn + jj] == v) {
+					JLabel msgBar = new JLabel("invalid input "+ v);
+					return false;
+				}
+			}
+		}
+
+
+		return true;
+	}
 	/**
 	 * 
 	 * @return
@@ -121,6 +118,5 @@ import java.util.Random;
 			}
 		}
 		return true;
-	
-		}
+	}
 }
