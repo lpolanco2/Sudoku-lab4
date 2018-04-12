@@ -1,0 +1,220 @@
+package sudoku.model;
+
+import java.io.PrintStream;
+import java.util.Random;
+import java.util.Scanner;
+
+import javax.swing.JLabel;
+
+import sudoku.dialog.SudokuDialog;
+
+/** An abstraction of Sudoku puzzle. */
+public class Board {
+	/**
+	 * 
+	 */
+	private PrintStream out = System.out;
+	public int[][] table;
+	private static int No_Input = 0;
+	private boolean [][] truthTable;
+	private boolean solvable = true;
+	//private int caseNum = 0;
+	/** Size of this board (number of columns/rows). */
+	public int size;
+	
+	/** Create a new board of the given size. */
+	public Board(int size) {
+		this.size = size;
+		this.table = new int [size][size];
+		this.truthTable = new boolean[size][size];
+
+	}
+	
+
+	/** Return the size of this board. */
+
+	public int size() {
+		return size;
+	}
+	
+
+	public void updateBoard(int x, int y, String inputval) {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int [][] getTable(){
+		return table; 
+	}
+	public void partialFill(){
+		int min =1;
+		int total = 0;
+		int max = size;
+		int counter = 0;
+		Random r = new Random();
+		int randominput = r.nextInt(max-min+1)+min;
+		
+		int randominput1 = r.nextInt(max-min+1)+min;
+		System.out.println(randominput+""+randominput1);
+		if(size == 4){
+			total = 4;
+		}else if(size == 9){
+			total = 17;
+		}
+		
+			System.out.println("ESCAPE");
+			 for(int k =1;k<=size;k++){
+					if(sudokuLaw(randominput,randominput1,k)){
+						table[randominput][randominput1]= k;
+						
+					}
+					
+					
+
+			
+			 //counter++;
+		}
+	}
+	public boolean solve(int caseNum) {
+
+		 switch (caseNum){
+		 
+		 case 0: 
+			 //solve entire puzzle 
+			 for(int i =0;i<size;i++){
+				 for(int j=0;j<size;j++){ 
+					 //if(table[i][j] == No_Input){
+						 for(int k = 1;k<=size;k++){
+							 if(sudokuLaw(i,j,k)){
+								 table[i][j] = k;
+								 
+							 }
+							
+								 System.out.println("Emergency shut OFF");
+								 ///table[i][j]=No_Input;
+							
+						 	}
+						 }
+						 
+				// }
+				
+		 }
+				
+	 
+			 break;
+		 case 1:
+			 //check if solvable
+			//solve(0);
+			//if(solvable1 == false){
+				//System.out.println("Not solvable");
+				//return false;
+			//}
+			/* int temp = 0;
+			 System.out.println("Check if Solvable");
+			 for(int i=0;i<size;i++){
+				 for(int j=0; j<size; j++){
+					if(table[i][j] != No_Input){//if there is input
+						temp = table[i][j];//assign input to temp variable
+						if(sudokuLaw(i,j,temp) == true){//check if input is valid
+							
+						}
+					}
+
+				 }
+			 }*/
+			 break;
+		
+		 }
+		return false;
+		
+	}
+		 
+	 
+		
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param v
+	 */
+	public void insert(int x, int y, int v){
+		if(x>size || y > size || v > size || x < 0 || y < 0 ) {
+			//JLabel msgBar = new JLabel("Invalid Input." +  x + y + v);
+			return;
+		}
+		//if(v==0 || sudokuLaw(x,y,v))
+			//this.table[x][y] = v;
+		//this.truthTable[x][y] = true;
+		
+		//Scanner scnr = new Scanner(System.in);
+	//	System.out.println("Would you like to solve the puzzle");
+		//int input = scnr.nextInt();
+		//if(input==0){
+			//solve(0);
+		//}
+		partialFill();
+	}
+	/**
+	 * 
+	 */
+	
+	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param v
+	 * @return
+	 */
+	public boolean sudokuLaw(int x, int y, int v){
+
+
+		for (int jj = 0; jj < size; jj++) {
+			if (table[x][jj] == v) {
+				//JLabel msgBar = new JLabel("invalid row input "+ v);
+				return false;
+			}
+		}
+
+
+		for (int ii = 0; ii < size; ii++) {
+			if (table[ii][y] == v) {
+				//JLabel msgBar = new JLabel("invalid column input "+ v);
+				return false;
+			}
+		}
+
+
+		int boxRow = x - x % (int)Math.sqrt(size);
+		int boxColumn = y - y % (int)Math.sqrt(size);
+
+		for (int ii = 0; ii < (int)Math.sqrt(size); ii++) {
+			for (int jj = 0; jj < (int)Math.sqrt(size); jj++) {
+				if (table[boxRow + ii][boxColumn + jj] == v) {
+					//JLabel msgBar = new JLabel("invalid input "+ v);
+					return false;
+				}
+			}
+		}
+
+
+		return true;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isSolved() {
+		for(int i = 0; i<truthTable.length; i++) {
+			for(int k = 0; k<truthTable.length; k++){
+				if(!truthTable[i][k]) {
+					return truthTable[i][k];
+				}
+			}
+		}
+		return true;
+	}
+}
