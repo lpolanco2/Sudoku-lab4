@@ -1,3 +1,4 @@
+
 package sudoku.dialog;
 
 import java.awt.BorderLayout;
@@ -5,6 +6,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Menu;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 //import java.io.IOException;
 import java.net.URL;
 
@@ -19,6 +23,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import sudoku.model.Board;
@@ -58,9 +65,11 @@ public static int inputVal;
         setSize(dim);
         board = new Board(9);
         boardPanel = new BoardPanel(board, this::boardClicked);
-        configureUI();
+       configureUI();    
+  
         //setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    
         setVisible(true);
         //setResizable(false);
     }
@@ -142,8 +151,22 @@ public static int inputVal;
         setIconImage(createImageIcon("sudoku.png").getImage());
         setLayout(new BorderLayout());
         
+        JPanel South = new JPanel();
+        	South.setLayout(new BorderLayout());
+        
+        JPanel North = new JPanel();
+        	North.setLayout(new BorderLayout());
+        
+//        JPanel menu = createMenu();
+//        	menu.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+//        add(menu, BorderLayout.NORTH); 
+        
+//        JPanel toolBar= createToolBar();
+//        toolBar.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+//        North.add(toolBar, BorderLayout.NORTH);
+//        
+//  
         JPanel buttons = makeControlPanel();
-        // boarder: top, left, bottom, right
         buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
         add(buttons, BorderLayout.NORTH);
         
@@ -155,9 +178,117 @@ public static int inputVal;
         
         msgBar.setBorder(BorderFactory.createEmptyBorder(10,16,10,0));
         add(msgBar, BorderLayout.SOUTH);
-    }
+    
+        
+        
+        
+        
+        
+        
+       //JPanel p = new JPanel();
+
+      // this.add(board);
+
+       JMenuBar bar = new JMenuBar();
+
+       JMenu menu = new JMenu("Menu");
+
+       bar.add(menu);
+
+       JMenuItem hint = new JMenuItem("Cheat Sheet");
+       
+        menu.add(hint);
+
+        JMenuItem solve = new JMenuItem("Solve");
+        menu.add(solve);
+        
+        JMenuItem solvable = new JMenuItem("Is your board solvable?");
+        menu.add(solvable);
+        
+        JMenuItem fill = new JMenuItem("Start with partially filled board");
+        menu.add(fill);
+        
+        
+        //bar.setLayout(new BorderLayout());
+
+        //board.add(bar, BorderLayout.SOUTH);
+        bar.setBorder(BorderFactory.createEmptyBorder());
+       
+        //bar.setBorder(BorderFactory.createEmptyBorder());
+	    add(bar, BorderLayout.WEST); 
+
+       }
+        
+        
+        
+    
+    
       
-    /** Create a control panel consisting of new and number buttons. */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+//	private JPanel createToolBar() {
+//		JMenu toolBar = new JMenu("tool bar");
+//		
+//		
+//	    JPanel content = new JPanel();
+//	    //content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+//	        content.add(toolBar);
+//	       
+//	        return content;
+//	}
+//
+//	
+//	
+//	private JPanel createMenu() {
+//		
+//		JMenuBar menuBar;
+//		JMenu menu;
+//		
+//		menuBar = new JMenuBar();
+//		menu = new JMenu("Fill");
+//		
+//		menu.setMnemonic(KeyEvent.VK_A);
+//		menuBar.add(menu);
+//		
+//		
+//	    JPanel content = new JPanel();
+//	    //content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+//	     
+//	        content.add(menuBar, menu);
+//	    setVisible(true);
+//	        return content;
+		
+	        
+	        
+	        
+	        
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/** Create a control panel consisting of new and number buttons. */
     private JPanel makeControlPanel() {
     JPanel newButtons = new JPanel(new FlowLayout());
         JButton new4Button = new JButton("New (4x4)");
@@ -167,7 +298,7 @@ public static int inputVal;
                 newClicked(e.getSource() == new4Button ? 4 : 9);
             });
             newButtons.add(button);
-    }
+        }
     newButtons.setAlignmentX(LEFT_ALIGNMENT);
         
     // buttons labeled 1, 2, ..., 9, and X.
@@ -183,6 +314,8 @@ public static int inputVal;
     }
     numberButtons.setAlignmentX(LEFT_ALIGNMENT);
 
+    
+    
     JPanel content = new JPanel();
     content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
         content.add(newButtons);
@@ -190,6 +323,19 @@ public static int inputVal;
         return content;
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /** Create an image icon from the given image file. */
     private ImageIcon createImageIcon(String filename) {
         URL imageUrl = getClass().getResource(IMAGE_DIR + filename);
@@ -206,6 +352,12 @@ public static int inputVal;
        new SudokuDialog();
     }
     
-}
+    }
+
+
+
+
+
+
 
 
