@@ -63,13 +63,16 @@ public static int max;
         board = new Board(9);
         boardPanel = new BoardPanel(board, this::boardClicked);
         configureUI();
+        
         //setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         //setResizable(false);
     }
     
-
+    private void partiallyFillBoard(){
+	board.partialFill();
+    }
     
     /**
      * Callback to be invoked when a square of the board is clicked.
@@ -113,7 +116,8 @@ public static int max;
     private void newClicked(int size) {
     max = size;
     int j = JOptionPane.showConfirmDialog(null, "Would you like to start a new game?");
-    if(j==0) {
+   
+    if(j==0 ) {
     board.size = size;
     int[][] newTable = board.getTable();
     for(int x =0; x<board.size;x++) {
@@ -124,6 +128,12 @@ public static int max;
     }
     repaint();
     
+    }
+    int k = JOptionPane.showConfirmDialog(null, "Would you likea partially filled board?");
+    if(j==0 && k ==0){
+    	
+    	partiallyFillBoard();
+        
     }
         showMessage("New clicked: " + size);
         repaint();
