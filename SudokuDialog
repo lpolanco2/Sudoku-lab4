@@ -14,7 +14,7 @@ import java.net.URL;
 
 //import javax.sound.sampled.AudioInputStream;
 //import javax.sound.sampled.AudioSystem;
-//import javax.sound.sampled.Clip;
+//import javax.soun d.sampled.Clip;
 //import javax.sound.sampled.LineUnavailableException;
 //import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
@@ -157,18 +157,18 @@ public static int inputVal;
         JPanel North = new JPanel();
         	North.setLayout(new BorderLayout());
         
-//        JPanel menu = createMenu();
-//        	menu.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
-//        add(menu, BorderLayout.NORTH); 
+        JPanel menu = createMenu();
+        	menu.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        add(menu, BorderLayout.NORTH); 
         
-//        JPanel toolBar= createToolBar();
-//        toolBar.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
-//        North.add(toolBar, BorderLayout.NORTH);
-//        
-//  
+        JPanel toolBar= createToolBar();
+        toolBar.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        North.add(toolBar, BorderLayout.NORTH);
+        
+  
         JPanel buttons = makeControlPanel();
         buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
-        add(buttons, BorderLayout.NORTH);
+        add(buttons, BorderLayout.SOUTH);
         
         JPanel board = new JPanel();
         board.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
@@ -189,33 +189,33 @@ public static int inputVal;
 
       // this.add(board);
 
-       JMenuBar bar = new JMenuBar();
-
-       JMenu menu = new JMenu("Menu");
-
-       bar.add(menu);
-
-       JMenuItem hint = new JMenuItem("Cheat Sheet");
-       
-        menu.add(hint);
-
-        JMenuItem solve = new JMenuItem("Solve");
-        menu.add(solve);
-        
-        JMenuItem solvable = new JMenuItem("Is your board solvable?");
-        menu.add(solvable);
-        
-        JMenuItem fill = new JMenuItem("Start with partially filled board");
-        menu.add(fill);
-        
-        
-        //bar.setLayout(new BorderLayout());
-
-        //board.add(bar, BorderLayout.SOUTH);
-        bar.setBorder(BorderFactory.createEmptyBorder());
-       
-        //bar.setBorder(BorderFactory.createEmptyBorder());
-	    add(bar, BorderLayout.WEST); 
+//       JMenuBar bar = new JMenuBar();
+//
+//       JMenu menu = new JMenu("Menu");
+//
+//       bar.add(menu);
+//
+//       JMenuItem hint = new JMenuItem("Cheat Sheet");
+//       
+//        menu.add(hint);
+//
+//        JMenuItem solve = new JMenuItem("Solve");
+//        menu.add(solve);
+//        
+//        JMenuItem solvable = new JMenuItem("Is your board solvable?");
+//        menu.add(solvable);
+//        
+//        JMenuItem fill = new JMenuItem("Start with partially filled board");
+//        menu.add(fill);
+//        
+//        
+//        //bar.setLayout(new BorderLayout());
+//
+//        //board.add(bar, BorderLayout.SOUTH);
+//        bar.setBorder(BorderFactory.createEmptyBorder());
+//       
+//        //bar.setBorder(BorderFactory.createEmptyBorder());
+//	    add(bar, BorderLayout.NORTH); 
 
        }
         
