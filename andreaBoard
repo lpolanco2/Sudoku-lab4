@@ -17,11 +17,12 @@ public class Board {
 	public int[][] table;
 	private static int No_Input = 0;
 	private boolean [][] truthTable;
-	private boolean solvable = true;
+	private boolean solvable = false;
+	private int counter =0;
 	//private int caseNum = 0;
 	/** Size of this board (number of columns/rows). */
 	public int size;
-	
+
 	/** Create a new board of the given size. */
 	public Board(int size) {
 		this.size = size;
@@ -29,18 +30,16 @@ public class Board {
 		this.truthTable = new boolean[size][size];
 
 	}
-	
+
 
 	/** Return the size of this board. */
 
 	public int size() {
 		return size;
 	}
-	
 
-	public void updateBoard(int x, int y, String inputval) {
-		// TODO Auto-generated method stub
-	}
+
+	
 
 	/**
 	 * 
@@ -49,91 +48,110 @@ public class Board {
 	public int [][] getTable(){
 		return table; 
 	}
+	//Partially fill a board of size 4 with 4 digits
+	// Partially fill a board of size 9 with 17 digits
 	public void partialFill(){
-		int min =1;
-		int total = 0;
-		int max = size;
-		int counter = 0;
+		int min =0;int max =size-1; //input limits
+		int mink=1; int maxk = size;
+		int board4 = 4;int board9 = 17; //numbers to be placed
+		int inserted=0;
+
 		Random r = new Random();
-		int randominput = r.nextInt(max-min+1)+min;
-		
-		int randominput1 = r.nextInt(max-min+1)+min;
-		System.out.println(randominput+""+randominput1);
-		if(size == 4){
-			total = 4;
-		}else if(size == 9){
-			total = 17;
-		}
-		
-			System.out.println("ESCAPE");
-			 for(int k =1;k<=size;k++){
-					if(sudokuLaw(randominput,randominput1,k)){
-						table[randominput][randominput1]= k;
-						
-					}
-					
-					
+		int randominput = r.nextInt(max-min+1)+min; //random row
+		int randominput1 = r.nextInt(max-min+1)+min;//random column
+		int randomk = r.nextInt(maxk-mink+1)+mink;
 
-			
-			 //counter++;
+		//	System.out.println(randominput+""+randominput1);
+		if(size ==4){
+			inserted = board4;
 		}
+		if(size==9){
+			inserted = board9;
+		}
+
+		if(table[randominput][randominput1]==No_Input && counter < inserted){
+
+			//System.out.println(counter);
+			if(!sudokuLaw(randominput,randominput1,randomk)){
+				//not sudoku law
+				//System.out.println("ERROR");
+			}
+
+			if(counter <inserted && sudokuLaw(randominput,randominput1,randomk)&& table[randominput][randominput1]==0){
+
+				counter++;
+				table[randominput][randominput1] = randomk;
+				//System.out.println("INSERTED " + randomk);
+
+			}
+			if(counter>=inserted){
+				//board is filled partially
+				//System.out.println("Board is filled");
+			}
+			if(table[randominput][randominput1]==No_Input && counter < inserted){
+				partialFill();
+			}
+			while(counter < inserted){
+				partialFill();
+			}
+
+
+
+
+
+
+		}
+
+
 	}
-	public boolean solve(int caseNum) {
-
-		 switch (caseNum){
-		 
-		 case 0: 
-			 //solve entire puzzle 
-			 for(int i =0;i<size;i++){
-				 for(int j=0;j<size;j++){ 
-					 //if(table[i][j] == No_Input){
-						 for(int k = 1;k<=size;k++){
-							 if(sudokuLaw(i,j,k)){
-								 table[i][j] = k;
-								 
-							 }
-							
-								 System.out.println("Emergency shut OFF");
-								 ///table[i][j]=No_Input;
-							
-						 	}
-						 }
-						 
-				// }
-				
-		 }
-				
-	 
-			 break;
-		 case 1:
-			 //check if solvable
-			//solve(0);
-			//if(solvable1 == false){
-				//System.out.println("Not solvable");
-				//return false;
-			//}
-			/* int temp = 0;
-			 System.out.println("Check if Solvable");
-			 for(int i=0;i<size;i++){
-				 for(int j=0; j<size; j++){
-					if(table[i][j] != No_Input){//if there is input
-						temp = table[i][j];//assign input to temp variable
-						if(sudokuLaw(i,j,temp) == true){//check if input is valid
-							
-						}
-					}
-
-				 }
-			 }*/
-			 break;
-		
-		 }
+	public boolean check( int k){
+		for(int i = 0;i<size;i++){
+			for(int j =0;j<size;j++){
+				if(sudokuLaw(i,j,k)){
+					
+					return true;
+				}
+			}
+		}
 		return false;
-		
+
 	}
-		 
-	 
+	public boolean solve() {
+		//solve entire puzzle 
+		//whenever they change board check whether it is solveable with empty squares
+		//or fail all INTERACT 
+		for(int row = 0;row<size;row++){
+			for(int col = 0; col<size;col++){
+				if(table[row][col] != No_Input){//full board
+					return true;
+				}
+				for(int k = 1;k<=size;k++){
+					if(sudokuLaw(row,col,k)){//if it pases rules of sudoku
+						//System.out.println("INSERT"+k);
+						
+					//if(check(k)){//check if solveable/will lead to a solution
+							table[row][col] = k; //then insert it
+						//}
+						//else previous row and column should be replaced by that current input
+						if(solve()){
+							//System.out.println("RECURSIVE");
+							//return true;
+
+						}
+						//table[row][col] = 0;
+					}
+					
+				}
+				
+			}
 		
+		}	
+
+		return false;
+	}
+
+
+
 	/**
 	 * 
 	 * @param x
@@ -148,20 +166,21 @@ public class Board {
 		//if(v==0 || sudokuLaw(x,y,v))
 			//this.table[x][y] = v;
 		//this.truthTable[x][y] = true;
-		
+
 		//Scanner scnr = new Scanner(System.in);
-	//	System.out.println("Would you like to solve the puzzle");
+		//	System.out.println("Would you like to solve the puzzle");
 		//int input = scnr.nextInt();
 		//if(input==0){
-			//solve(0);
+		solve();
+		//check();
 		//}
-		partialFill();
+		//partialFill();
 	}
 	/**
 	 * 
 	 */
-	
-	
+
+
 	/**
 	 * 
 	 * @param x
