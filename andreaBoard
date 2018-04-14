@@ -39,7 +39,7 @@ public class Board {
 	}
 
 
-	
+
 
 	/**
 	 * 
@@ -104,47 +104,66 @@ public class Board {
 
 
 	}
-	public boolean check( int k){
-		for(int i = 0;i<size;i++){
-			for(int j =0;j<size;j++){
-				if(sudokuLaw(i,j,k)){
-					
+	public boolean check(){
+		if(isSolved()){
+			return true;
+		}for(int row = 0;row<size;row++){
+			for(int col = 0; col<size;col++){
+				if(table[row][col] != No_Input && isSolved()){//full board
 					return true;
 				}
 			}
 		}
-		return false;
 
+		return false;
 	}
+
 	public boolean solve() {
 		//solve entire puzzle 
 		//whenever they change board check whether it is solveable with empty squares
 		//or fail all INTERACT 
+		if(isSolved()){
+			return true;
+		}
 		for(int row = 0;row<size;row++){
 			for(int col = 0; col<size;col++){
-				if(table[row][col] != No_Input){//full board
+				int nextRow= row+1;
+				int nextCol = col+1;
+
+				if(table[row][col] != No_Input && isSolved()){//full board
 					return true;
 				}
 				for(int k = 1;k<=size;k++){
-					if(sudokuLaw(row,col,k)){//if it pases rules of sudoku
-						//System.out.println("INSERT"+k);
-						
-					//if(check(k)){//check if solveable/will lead to a solution
-							table[row][col] = k; //then insert it
-						//}
-						//else previous row and column should be replaced by that current input
-						if(solve()){
-							//System.out.println("RECURSIVE");
-							//return true;
 
-						}
-						//table[row][col] = 0;
+					if(!sudokuLaw(row,col,k) && table[row][col]== No_Input){
+
+						//System.out.println(k+ " FAILED AT X:" +row+ "  Y:"+col);
+						table[row][col] = -1;
+
 					}
-					
+
+					if(table[row][col] ==-1){
+
+						table[row][col]=0;
+
+						//System.out.println("BACK "+ k+"TO ZERO");
+
+
+
+					}
+					if(sudokuLaw(row,col,k)&& table[row][col] ==No_Input){//if it pases rules of sudoku
+						//if(check(k)){//check if solveable/will lead to a solution
+						//System.out.println("good here"+ k);
+						table[row][col] = k; //then insert it
+
+					}
+
+
+
 				}
-				
+
 			}
-		
+
 		}	
 
 		return false;
@@ -160,21 +179,18 @@ public class Board {
 	 */
 	public void insert(int x, int y, int v){
 		if(x>size || y > size || v > size || x < 0 || y < 0 ) {
-			//JLabel msgBar = new JLabel("Invalid Input." +  x + y + v);
-			return;
-		}
-		//if(v==0 || sudokuLaw(x,y,v))
-			//this.table[x][y] = v;
-		//this.truthTable[x][y] = true;
 
-		//Scanner scnr = new Scanner(System.in);
-		//	System.out.println("Would you like to solve the puzzle");
-		//int input = scnr.nextInt();
-		//if(input==0){
-		solve();
+			return;
+		}	
+		//solve();
 		//check();
-		//}
 		//partialFill();
+		if(v==No_Input || sudokuLaw(x,y,v)){
+			this.table[x][y] = v;
+			this.truthTable[x][y] = true;
+
+		}
+
 	}
 	/**
 	 * 
@@ -193,7 +209,7 @@ public class Board {
 
 		for (int jj = 0; jj < size; jj++) {
 			if (table[x][jj] == v) {
-				//JLabel msgBar = new JLabel("invalid row input "+ v);
+
 				return false;
 			}
 		}
@@ -201,7 +217,7 @@ public class Board {
 
 		for (int ii = 0; ii < size; ii++) {
 			if (table[ii][y] == v) {
-				//JLabel msgBar = new JLabel("invalid column input "+ v);
+
 				return false;
 			}
 		}
@@ -213,7 +229,7 @@ public class Board {
 		for (int ii = 0; ii < (int)Math.sqrt(size); ii++) {
 			for (int jj = 0; jj < (int)Math.sqrt(size); jj++) {
 				if (table[boxRow + ii][boxColumn + jj] == v) {
-					//JLabel msgBar = new JLabel("invalid input "+ v);
+
 					return false;
 				}
 			}
@@ -236,4 +252,6 @@ public class Board {
 		}
 		return true;
 	}
+
+
 }
