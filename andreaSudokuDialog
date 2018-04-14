@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
 //import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,7 +25,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.JOptionPane;
 import sudoku.model.Board;
 
@@ -90,7 +93,7 @@ public class SudokuDialog extends JFrame {
 		board.insert(x,y,inputVal);
 		
 		showMessage(String.format("Board clicked: x = %d, y = %d",  x, y));
-		checkAgain();
+		//checkAgain();
 		repaint();
 		
 	}
@@ -112,7 +115,7 @@ public class SudokuDialog extends JFrame {
 			inputVal = number;
 		}
 
-		checkAgain();
+		//checkAgain();
 		 repaint();
 	}
 
@@ -125,7 +128,7 @@ public class SudokuDialog extends JFrame {
 	 */
 	private void newClicked(int size) {
 		max = size;
-		checkAgain();
+		//checkAgain();
 		int j = JOptionPane.showConfirmDialog(null, "Would you like to start a new game?");
 
 		if(j==0 ) {
@@ -140,12 +143,7 @@ public class SudokuDialog extends JFrame {
 			repaint();
 
 		}
-		int k = JOptionPane.showConfirmDialog(null, "Would you likea partially filled board?");
-		if(j==0 && k ==0){
-
-			partiallyFillBoard();
-
-		}
+		
 		showMessage("New clicked: " + size);
 		repaint();
 	}
@@ -161,9 +159,271 @@ public class SudokuDialog extends JFrame {
 
 	}
 
+    /** Configure the UI. */
+    private void configureUI() {
+        setIconImage(createImageIcon("sudoku.png").getImage());
+        setLayout(new BorderLayout());
+        
+        JPanel South = new JPanel();
+        	South.setLayout(new BorderLayout());
+        
+        JPanel North = new JPanel();
+        	North.setLayout(new BorderLayout());
+        
+        JPanel menu = createMenu();
+        	menu.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        add(menu, BorderLayout.NORTH); 
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //JPanel toolBar= createToolBar();
+        
+        JPanel content = new JPanel();
+	    JToolBar bar = new JToolBar("TOOL BAR");
+	    JButton button = new JButton("wassup");
+	    content.add(bar.add(button));
+	    content.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        North.add(content, BorderLayout.WEST);
+        setVisible(true);
+  
+        JPanel buttons = makeControlPanel();
+        buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        add(buttons, BorderLayout.NORTH);
+        
+        JPanel board = new JPanel();
+        board.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        board.setLayout(new GridLayout(1,1));
+        board.add(boardPanel);
+        add(board, BorderLayout.CENTER);
+        
+        msgBar.setBorder(BorderFactory.createEmptyBorder(10,16,10,0));
+        add(msgBar, BorderLayout.SOUTH);
+    
+        
+        
+        
+        
+        
+        
+       //JPanel p = new JPanel();
 
+      // this.add(board);
+
+//       JMenuBar bar = new JMenuBar();
+//
+//       JMenu menu = new JMenu("Menu");
+//
+//       bar.add(menu);
+//
+//       JMenuItem hint = new JMenuItem("Cheat Sheet");
+//       
+//        menu.add(hint);
+//
+//        JMenuItem solve = new JMenuItem("Solve");
+//        menu.add(solve);
+//        
+//        JMenuItem solvable = new JMenuItem("Is your board solvable?");
+//        menu.add(solvable);
+//        
+//        JMenuItem fill = new JMenuItem("Start with partially filled board");
+//        menu.add(fill);
+//        
+//        
+//        //bar.setLayout(new BorderLayout());
+//
+//        //board.add(bar, BorderLayout.SOUTH);
+//        bar.setBorder(BorderFactory.createEmptyBorder());
+//       
+//        //bar.setBorder(BorderFactory.createEmptyBorder());
+//	    add(bar, BorderLayout.NORTH); 
+
+       }
+
+	private JToolBar createToolBar() {
+	
+	   // JPanel content = new JPanel();
+	    JToolBar bar = new JToolBar("TOOL BAR");
+	    JButton button = new JButton("wassup");
+	   // content.add(bar.add(button));
+	   // content.setVisible(true);
+	   // return content;
+	    bar.add(button);
+	    return bar;
+	    
+	    
+	    
+	}
+
+	private JPanel createMenu() {
+		JPanel menus = new JPanel();
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("Menu");
+		JMenu newgame = new JMenu("New Game");
+		
+		 menu.setMnemonic(KeyEvent.VK_G);
+		 menu.getAccessibleContext().setAccessibleDescription("MENU");
+		 menuBar.add(menu);
+		 menuBar.add(newgame);
+		 
+		
+		 JMenuItem menuItem = new JMenuItem("4x4");
+		 newgame.add(menuItem);
+		 
+		 JMenuItem menuItem0 = new JMenuItem("9x9");
+		 newgame.add(menuItem0);
+		 
+		 JMenuItem menuItem1 = new JMenuItem("Partial Fill", KeyEvent.VK_N);
+		 menuItem1.setIcon(createImageIcon("newGame.png"));
+		 
+		 JMenuItem menuItem2 = new JMenuItem("Is it solvable?", KeyEvent.VK_N);
+		 menuItem2.setIcon(createImageIcon("newGame.png"));
+		 
+		 JMenuItem menuItem3 = new JMenuItem("Solve", KeyEvent.VK_N);
+		 menuItem3.setIcon(createImageIcon("newGame.png"));
+		 
+		 
+		newgame.add(menuItem);
+		newgame.add(menuItem0);
+		menu.add(menuItem1);
+		menu.add(menuItem2);
+		menu.add(menuItem3);
+		
+		
+		
+		menuItem.addActionListener(e ->  newClicked(4));
+		menuItem0.addActionListener(e ->  newClicked(9));
+		menuItem1.addActionListener(e -> partiallyFillBoard() );
+		menuItem3.addActionListener(e -> board.solve());
+		
+		
+		setJMenuBar(menuBar);
+		
+		setVisible(true);
+		
+		return menus;	
+	}
+	
+	
+	
+	
+	
+//		menuBar = new JMenuBar();
+//		menu = new JMenu("Fill");
+//		
+//		menu.setMnemonic(KeyEvent.VK_A);
+//		menuBar.add(menu);
+//		
+//		
+//	    JPanel content = new JPanel();
+//	    //content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+//	     
+//	        content.add(menuBar, menu);
+//	    setVisible(true);
+//	        return content;
+		
+	
+	
+	
+	        
+	        
+	        
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/** Create a control panel consisting of new and number buttons. */
+    private JPanel makeControlPanel() {
+    
+    	
+    	JPanel newButtons = new JPanel(new FlowLayout());
+       
+    	JButton new4Button = new JButton("New (4x4)");
+       
+    	for (JButton button: new JButton[] { new4Button, new JButton("New (9x9)") }) {
+        button.setFocusPainted(false);
+            button.addActionListener(e -> {
+                newClicked(e.getSource() == new4Button ? 4 : 9);
+            });
+           // newButtons.add(button);
+        }
+    newButtons.setAlignmentX(LEFT_ALIGNMENT);
+        
+    
+    
+    // buttons labeled 1, 2, ..., 9, and X.
+    JPanel numberButtons = new JPanel(new FlowLayout());
+    int maxNumber = board.size() + 1;
+    for (int i = 1; i <= maxNumber; i++) {
+            int number = i % maxNumber;
+            JButton button = new JButton(number == 0 ? "X" : String.valueOf(number));
+            button.setFocusPainted(false);
+            button.setMargin(new Insets(0,2,0,2));
+            button.addActionListener(e -> numberClicked(number));
+    numberButtons.add(button);
+    }
+    numberButtons.setAlignmentX(LEFT_ALIGNMENT);
+    
+    
+
+    
+    
+    JPanel content = new JPanel();
+    content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+        content.add(newButtons);
+        content.add(numberButtons);
+        return content;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /** Create an image icon from the given image file. */
+    private ImageIcon createImageIcon(String filename) {
+        URL imageUrl = getClass().getResource(IMAGE_DIR + filename);
+        if (imageUrl != null) {
+            return new ImageIcon(imageUrl);
+        }
+        return null;
+    }
+    
+
+    
+    
+    public static void main(String[] args) {
+       new SudokuDialog();
+    }
+    
+    
+
+
+//----------------------------------------------------------------------
 	/** Configure the UI. */
-	private void configureUI() {
+	/*private void configureUI() {
 		setIconImage(createImageIcon("sudoku.png").getImage());
 		setLayout(new BorderLayout());
 
@@ -183,7 +443,7 @@ public class SudokuDialog extends JFrame {
 	}
 
 	/** Create a control panel consisting of new and number buttons. */
-	private JPanel makeControlPanel() {
+/*	private JPanel makeControlPanel() {
 		JPanel newButtons = new JPanel(new FlowLayout());
 		JButton new4Button = new JButton("New (4x4)");
 		for (JButton button: new JButton[] { new4Button, new JButton("New (9x9)") }) {
@@ -216,7 +476,7 @@ public class SudokuDialog extends JFrame {
 	}
 
 	/** Create an image icon from the given image file. */
-	private ImageIcon createImageIcon(String filename) {
+	/*private ImageIcon createImageIcon(String filename) {
 		URL imageUrl = getClass().getResource(IMAGE_DIR + filename);
 		if (imageUrl != null) {
 			return new ImageIcon(imageUrl);
@@ -231,6 +491,7 @@ public class SudokuDialog extends JFrame {
 		new SudokuDialog();
 
 	}
+	*/
 	public void checkAgain(){
 		if(board.check()){
 			checkTrue();
