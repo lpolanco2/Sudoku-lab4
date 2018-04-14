@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 //import java.io.IOException;
 import java.net.URL;
 
+import javax.swing.Action;
 //import javax.sound.sampled.AudioInputStream;
 //import javax.sound.sampled.AudioSystem;
 //import javax.soun d.sampled.Clip;
@@ -27,6 +28,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.JOptionPane;
 import sudoku.model.Board;
 
@@ -160,15 +162,30 @@ public static int inputVal;
         JPanel menu = createMenu();
         	menu.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
         add(menu, BorderLayout.NORTH); 
+       
         
-        JPanel toolBar= createToolBar();
-        toolBar.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
-        North.add(toolBar, BorderLayout.NORTH);
         
+        
+        
+        
+        
+        
+        
+        
+        
+        //JPanel toolBar= createToolBar();
+        
+        JPanel content = new JPanel();
+	    JToolBar bar = new JToolBar("TOOL BAR");
+	    JButton button = new JButton("wassup");
+	    content.add(bar.add(button));
+	    content.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        North.add(content, BorderLayout.WEST);
+        setVisible(true);
   
         JPanel buttons = makeControlPanel();
         buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
-        add(buttons, BorderLayout.SOUTH);
+        add(buttons, BorderLayout.NORTH);
         
         JPanel board = new JPanel();
         board.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
@@ -241,24 +258,76 @@ public static int inputVal;
     
     
 
-//	private JPanel createToolBar() {
-//		JMenu toolBar = new JMenu("tool bar");
-//		
-//		
-//	    JPanel content = new JPanel();
-//	    //content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
-//	        content.add(toolBar);
-//	       
-//	        return content;
-//	}
-//
-//	
-//	
-//	private JPanel createMenu() {
-//		
-//		JMenuBar menuBar;
-//		JMenu menu;
-//		
+	private JPanel createToolBar() {
+	
+	    JPanel content = new JPanel();
+	    JToolBar bar = new JToolBar("TOOL BAR");
+	    JButton button = new JButton("wassup");
+	    content.add(bar.add(button));
+	    content.setVisible(true);
+	    return content;
+	    
+	    
+	    
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private JPanel createMenu() {
+		JPanel menus = new JPanel();
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("Menu");
+		
+		 menu.setMnemonic(KeyEvent.VK_G);
+		 menu.getAccessibleContext().setAccessibleDescription("MENU");
+		 menuBar.add(menu);
+		 
+		 JMenuItem menuItem = new JMenuItem("New Game", KeyEvent.VK_N);
+		 menuItem.setIcon(createImageIcon("newGame.png"));
+		 
+		 JMenuItem menuItem1 = new JMenuItem("Hints", KeyEvent.VK_N);
+		 menuItem.setIcon(createImageIcon("newGame.png"));
+		 
+		 JMenuItem menuItem2 = new JMenuItem("Is it solvable?", KeyEvent.VK_N);
+		 menuItem.setIcon(createImageIcon("newGame.png"));
+		 
+		 JMenuItem menuItem3 = new JMenuItem("Solve", KeyEvent.VK_N);
+		 menuItem.setIcon(createImageIcon("newGame.png"));
+		 
+		 
+		
+		
+		menu.add(menuItem);
+		menu.add(menuItem1);
+		menu.add(menuItem2);
+		menu.add(menuItem3);
+
+
+		
+		
+		setJMenuBar(menuBar);
+		setVisible(true);
+		
+		return menus;	
+	}
+	
+	
+	
+	
+	
 //		menuBar = new JMenuBar();
 //		menu = new JMenu("Fill");
 //		
@@ -273,7 +342,9 @@ public static int inputVal;
 //	    setVisible(true);
 //	        return content;
 		
-	        
+	
+	
+	
 	        
 	        
 	        
@@ -290,9 +361,13 @@ public static int inputVal;
 	
 	/** Create a control panel consisting of new and number buttons. */
     private JPanel makeControlPanel() {
-    JPanel newButtons = new JPanel(new FlowLayout());
-        JButton new4Button = new JButton("New (4x4)");
-        for (JButton button: new JButton[] { new4Button, new JButton("New (9x9)") }) {
+    
+    	
+    	JPanel newButtons = new JPanel(new FlowLayout());
+       
+    	JButton new4Button = new JButton("New (4x4)");
+       
+    	for (JButton button: new JButton[] { new4Button, new JButton("New (9x9)") }) {
         button.setFocusPainted(false);
             button.addActionListener(e -> {
                 newClicked(e.getSource() == new4Button ? 4 : 9);
@@ -301,6 +376,8 @@ public static int inputVal;
         }
     newButtons.setAlignmentX(LEFT_ALIGNMENT);
         
+    
+    
     // buttons labeled 1, 2, ..., 9, and X.
     JPanel numberButtons = new JPanel(new FlowLayout());
     int maxNumber = board.size() + 1;
@@ -313,6 +390,8 @@ public static int inputVal;
     numberButtons.add(button);
     }
     numberButtons.setAlignmentX(LEFT_ALIGNMENT);
+    
+    
 
     
     
@@ -353,11 +432,6 @@ public static int inputVal;
     }
     
     }
-
-
-
-
-
 
 
 
