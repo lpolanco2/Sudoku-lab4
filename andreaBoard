@@ -19,6 +19,9 @@ public class Board {
 	private boolean [][] truthTable;
 	private boolean solvable = false;
 	private int counter =0;
+	private int inserted = 0;
+	private int prevRow =0;
+	private int prevCol = 0;
 	//private int caseNum = 0;
 	/** Size of this board (number of columns/rows). */
 	public int size;
@@ -53,8 +56,8 @@ public class Board {
 	public void partialFill(){
 		int min =0;int max =size-1; //input limits
 		int mink=1; int maxk = size;
-		int board4 = 4;int board9 = 17; //numbers to be placed
-		int inserted=0;
+		int board4 = 0;int board9 = 0; //numbers to be placed
+		//int inserted=0;
 
 		Random r = new Random();
 		int randominput = r.nextInt(max-min+1)+min; //random row
@@ -63,11 +66,20 @@ public class Board {
 
 		//	System.out.println(randominput+""+randominput1);
 		if(size ==4){
+			board4 = 4;
 			inserted = board4;
 		}
 		if(size==9){
-			inserted = board9;
+			for(int i=0;i<9;i++){
+				for(int j=0;j<9;j++){
+					table[i][j] = board[j][i];
+				}
+			}
 		}
+		//if(size==9){
+		//	board9 = 17;
+			//inserted = board9;
+		//}
 
 		if(table[randominput][randominput1]==No_Input && counter < inserted){
 
@@ -104,69 +116,59 @@ public class Board {
 
 
 	}
+	
+
+	int [][] board = {
+			{8,6,0,0,3,0,0,0,2},
+			{0,4,0,0,1,6,0,0,0},
+			{0,2,0,0,0,0,0,0,3},
+			{7,0,0,0,0,9,8,0,0},
+			{0,0,0,0,6,8,1,0,0},
+			{1,0,0,0,0,0,5,7,0},
+			{0,0,0,6,2,1,0,9,0},
+			{0,0,8,0,0,0,0,0,0},
+			{0,7,9,0,0,0,0,4,0},
+			
+	};
 	public boolean check(){
 		if(isSolved()){
 			return true;
-		}for(int row = 0;row<size;row++){
-			for(int col = 0; col<size;col++){
-				if(table[row][col] != No_Input && isSolved()){//full board
-					return true;
-				}
-			}
 		}
-
+		if(solve()== true){
+			return true;
+		}
+		
 		return false;
 	}
 
 	public boolean solve() {
-		//solve entire puzzle 
-		//whenever they change board check whether it is solveable with empty squares
-		//or fail all INTERACT 
-		if(isSolved()){
-			return true;
-		}
+		
 		for(int row = 0;row<size;row++){
 			for(int col = 0; col<size;col++){
-				int nextRow= row+1;
-				int nextCol = col+1;
-
-				if(table[row][col] != No_Input && isSolved()){//full board
-					return true;
+				if(table[row][col]!= No_Input){
+					continue;
 				}
+				
 				for(int k = 1;k<=size;k++){
-
-					if(!sudokuLaw(row,col,k) && table[row][col]== No_Input){
-
-						//System.out.println(k+ " FAILED AT X:" +row+ "  Y:"+col);
-						table[row][col] = -1;
-
-					}
-
-					if(table[row][col] ==-1){
-
-						table[row][col]=0;
-
-						//System.out.println("BACK "+ k+"TO ZERO");
-
-
-
-					}
-					if(sudokuLaw(row,col,k)&& table[row][col] ==No_Input){//if it pases rules of sudoku
-						//if(check(k)){//check if solveable/will lead to a solution
-						//System.out.println("good here"+ k);
+					if(sudokuLaw(row,col,k)){//if it pases rules of sudoku
+																//if(check(k)){//check if solveable/will lead to a solution
+													//System.out.println("good here"+ k);
 						table[row][col] = k; //then insert it
-
+						prevRow = row;
+						prevCol = col;
+						if(solve()){
+							return true;
+						}else{
+							table[row][col] = No_Input;
+						}
 					}
-
-
-
 				}
-
+				return false;
 			}
+		}
+		return true;
 
-		}	
 
-		return false;
 	}
 
 
@@ -191,6 +193,7 @@ public class Board {
 
 		}
 
+		
 	}
 	/**
 	 * 
