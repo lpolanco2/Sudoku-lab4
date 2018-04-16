@@ -88,14 +88,19 @@ public class SudokuDialog extends JFrame {
 	 * @param y 0-based column index of the clicked square.
 	 */
 	private void boardClicked(int x, int y) {
+		if(board.isSolved()&& board.check()){
+			checkTrue();
+				
+		}
+		//if( !board.isSolved() && !board.check() &&  ){
+		////	NotSolveableMsg();
+		//}
 		
-		
-		board.insert(x,y,inputVal);
-		
-		showMessage(String.format("Board clicked: x = %d, y = %d",  x, y));
-		//checkAgain();
-		repaint();
-		
+		else{
+			board.insert(x,y,inputVal);
+			showMessage(String.format("Board clicked: x = %d, y = %d",  x, y));
+			repaint();
+		}
 	}
 
 	
@@ -272,41 +277,42 @@ public class SudokuDialog extends JFrame {
 		 menu.getAccessibleContext().setAccessibleDescription("MENU");
 		 menuBar.add(menu);
 		 menuBar.add(newgame);
-		 
-		
+
+
 		 JMenuItem menuItem = new JMenuItem("4x4");
 		 newgame.add(menuItem);
-		 
+
 		 JMenuItem menuItem0 = new JMenuItem("9x9");
 		 newgame.add(menuItem0);
-		 
+
 		 JMenuItem menuItem1 = new JMenuItem("Partial Fill", KeyEvent.VK_N);
 		 menuItem1.setIcon(createImageIcon("newGame.png"));
-		 
+
 		 JMenuItem menuItem2 = new JMenuItem("Is it solvable?", KeyEvent.VK_N);
 		 menuItem2.setIcon(createImageIcon("newGame.png"));
-		 
+
 		 JMenuItem menuItem3 = new JMenuItem("Solve", KeyEvent.VK_N);
 		 menuItem3.setIcon(createImageIcon("newGame.png"));
-		 
-		 
-		newgame.add(menuItem);
-		newgame.add(menuItem0);
-		menu.add(menuItem1);
-		menu.add(menuItem2);
-		menu.add(menuItem3);
-		
-		
-		
-		menuItem.addActionListener(e ->  newClicked(4));
-		menuItem0.addActionListener(e ->  newClicked(9));
-		menuItem1.addActionListener(e -> partiallyFillBoard() );
-		menuItem3.addActionListener(e -> board.solve());
-		
-		
-		setJMenuBar(menuBar);
-		
-		setVisible(true);
+
+
+		 newgame.add(menuItem);
+		 newgame.add(menuItem0);
+		 menu.add(menuItem1);
+		 menu.add(menuItem2);
+		 menu.add(menuItem3);
+
+
+
+		 menuItem.addActionListener(e ->  newClicked(4));
+		 menuItem0.addActionListener(e ->  newClicked(9));
+		 menuItem1.addActionListener(e -> partiallyFillBoard() );
+		 menuItem2.addActionListener(e -> board.check());
+		 menuItem3.addActionListener(e -> board.solve());
+
+
+		 setJMenuBar(menuBar);
+
+		 setVisible(true);
 		
 		return menus;	
 	}
