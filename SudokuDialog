@@ -62,7 +62,7 @@ public class SudokuDialog extends JFrame {
     private JLabel msgBar = new JLabel("");
     
     /** Buttons for the ToolBar. */
-    JButton newGame, endGame, solveable;
+    JButton newGame, endGame, solveable, solve, partial;
     
     /** Menu items for dropdown menu. */
     JMenuItem menuItem, menuItem2, menuItem3;
@@ -92,6 +92,13 @@ public class SudokuDialog extends JFrame {
 	private void partiallyFillBoard(){
 		board.partialFill();
 	}
+	private void checkifSolve() {
+		if(board.check()) {
+			SolveableMsg();
+		}else {
+			NotSolveableMsg();
+		}
+	}
 	
 	/**
 	 * Callback to be invoked when a square of the board is clicked.
@@ -103,13 +110,14 @@ public class SudokuDialog extends JFrame {
 			checkTrue();
 				
 		}
-		//if( !board.isSolved() && !board.check() &&  ){
-		////	NotSolveableMsg();
-		//}
+		
 		
 		else{
 			board.insert(x,y,inputVal);
 			showMessage(String.format("Board clicked: x = %d, y = %d",  x, y));
+			if(board.isSolved()) {
+				checkTrue();
+			}
 			repaint();
 		}
 	}
@@ -124,13 +132,15 @@ public class SudokuDialog extends JFrame {
 		if( number > board.size || number <0){
 			showMessage("INVALID NUMBER FOR BOARD SIZE: "+ number);
 
+		}if(board.isSolved()) {
+			checkTrue();
 		}
 		
 		else{
 			inputVal = number;
 		}
 
-		//checkAgain();
+		
 		 repaint();
 	}
     
@@ -146,7 +156,7 @@ public class SudokuDialog extends JFrame {
      */
     private void newClicked(int size) {
 		max = size;
-		//checkAgain();
+	
 		int j = JOptionPane.showConfirmDialog(null, "Would you like to start a new game?");
 
 		if(j==0 ) {
@@ -259,7 +269,7 @@ public class SudokuDialog extends JFrame {
         toolBar.setFloatable(false);
         panel.add(toolBar, BorderLayout.PAGE_START);
     	
-		newGame = new JButton(createImageIcon("play.png"));
+		newGame = new JButton(createImageIcon("newgame.png"));
 		newGame.setToolTipText("Play new game");
 		toolBar.add(newGame);
 		
@@ -267,9 +277,20 @@ public class SudokuDialog extends JFrame {
 		endGame.setToolTipText("End current game");
 		toolBar.add(endGame);
 		
-		solveable = new JButton(createImageIcon("checkmark.png"));
+		solveable = new JButton(createImageIcon("solveable.png"));
 		solveable.setToolTipText("Checks if current board is solveable");
 		toolBar.add(solveable);
+		
+		solve = new JButton(createImageIcon("solve.png"));
+		solve.setToolTipText("solve");
+		toolBar.add(solve);
+		
+		partial = new JButton(createImageIcon("partial.png"));
+		partial.setToolTipText("Partially fill board");
+		toolBar.add(partial);
+		
+		
+		
 		
         return panel;
     }
@@ -315,7 +336,7 @@ public class SudokuDialog extends JFrame {
 		 menuItem.addActionListener(e ->  newClicked(4));
 		 menuItem0.addActionListener(e ->  newClicked(9));
 		 menuItem1.addActionListener(e -> partiallyFillBoard() );
-		 menuItem2.addActionListener(e -> board.check());
+		 menuItem2.addActionListener(e -> checkifSolve());
 		 menuItem3.addActionListener(e -> board.solve());
 
 
@@ -364,6 +385,24 @@ public class SudokuDialog extends JFrame {
 		});
 		
 		
+		solve.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent click) {
+				int input = JOptionPane.showConfirmDialog(null, "Do you want to solve your board?", "Solved", JOptionPane.YES_NO_OPTION);
+				if (input == JOptionPane.YES_OPTION) {
+					
+				}
+			}
+		});
+		
+		partial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent click) {
+				int input = JOptionPane.showConfirmDialog(null, "Do you want to partially fill your board?","done" , JOptionPane.YES_NO_OPTION);
+				if (input == JOptionPane.YES_OPTION) {
+					
+				}
+			}
+		});
+		
 			}
 		
 
@@ -386,14 +425,12 @@ public class SudokuDialog extends JFrame {
     }
     
    
-	public void checkAgain(){
-		if(board.check()){
-			checkTrue();
-		}
-		NotSolveableMsg();
-	}
+	
 	public void checkTrue(){
 		showMessage("SOLVED");
+	}
+	public void SolveableMsg() {
+		showMessage("Solveable");
 	}
 
 	public void NotSolveableMsg() {
@@ -401,5 +438,4 @@ public class SudokuDialog extends JFrame {
 	}
 
 }
-
 
